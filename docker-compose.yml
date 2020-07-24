@@ -1,8 +1,10 @@
-version: "3.7"
+version: "3"
 
 services:
   web:
-    build: .
+    image: registry.cn-beijing.aliyuncs.com/openvas/nodegoat
+    depends_on:
+      - mongo
     command: sh -c "until nc -z -w 2 mongo 27017 && echo 'mongo is ready for connections' && node artifacts/db-reset.js && npm start; do sleep 2; done"
     ports:
       - "4000:4000"
@@ -10,5 +12,3 @@ services:
   mongo:
     image: mongo:latest
     user: mongodb
-    expose:
-      - 27017
